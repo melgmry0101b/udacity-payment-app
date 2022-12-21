@@ -14,6 +14,10 @@
 #ifndef UDACITYPAYAPP_APP_H
 #define UDACITYPAYAPP_APP_H
 
+#include "../Card/card.h"
+#include "../Terminal/terminal.h"
+#include "../Server/server.h"
+
 // ------------------------------
 // Application's Main Procedure
 // ------------------------------
