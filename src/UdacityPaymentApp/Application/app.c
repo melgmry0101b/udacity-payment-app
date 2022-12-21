@@ -15,11 +15,11 @@
 
 #include "app.h"
 
-// ------------------------------
+// ---------------------------------------------
+// appStart
 // 
-// Application's Main Procedure
-// 
-// ------------------------------
+//  Application's Main Procedure
+// ---------------------------------------------
 void appStart(void)
 {
     printf("Hello, World!");
