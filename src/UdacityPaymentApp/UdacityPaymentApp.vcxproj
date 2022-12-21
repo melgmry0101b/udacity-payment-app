@@ -181,12 +181,15 @@
   <ItemGroup>
     <ClInclude Include="Application\app.h" />
     <ClInclude Include="Card\card.h" />
+    <ClInclude Include="Card\card.tests.h" />
     <ClInclude Include="Common\framework.h" />
     <ClInclude Include="Common\pch.h" />
     <ClInclude Include="Resource\resource.h" />
     <ClInclude Include="Resource\resource_macros.h" />
     <ClInclude Include="Server\server.h" />
+    <ClInclude Include="Server\server.tests.h" />
     <ClInclude Include="Terminal\terminal.h" />
+    <ClInclude Include="Terminal\terminal.tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource\version.rc" />
@@ -194,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="Application\app.c" />
     <ClCompile Include="Card\card.c" />
+    <ClCompile Include="Card\card.tests.c" />
     <ClCompile Include="Common\pch.c">
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ForcedIncludeFiles>
@@ -222,7 +226,9 @@
     </ClCompile>
     <ClCompile Include="main.c" />
     <ClCompile Include="Server\server.c" />
+    <ClCompile Include="Server\server.tests.c" />
     <ClCompile Include="Terminal\terminal.c" />
+    <ClCompile Include="Terminal\terminal.tests.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

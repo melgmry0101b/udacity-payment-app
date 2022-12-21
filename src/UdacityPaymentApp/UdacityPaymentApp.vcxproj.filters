@@ -46,6 +46,15 @@
     <ClInclude Include="Terminal\terminal.h">
       <Filter>Terminal</Filter>
     </ClInclude>
+    <ClInclude Include="Card\card.tests.h">
+      <Filter>Card</Filter>
+    </ClInclude>
+    <ClInclude Include="Terminal\terminal.tests.h">
+      <Filter>Terminal</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\server.tests.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource\version.rc">
@@ -69,5 +78,14 @@
       <Filter>Terminal</Filter>
     </ClCompile>
     <ClCompile Include="main.c" />
+    <ClCompile Include="Card\card.tests.c">
+      <Filter>Card</Filter>
+    </ClCompile>
+    <ClCompile Include="Terminal\terminal.tests.c">
+      <Filter>Terminal</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\server.tests.c">
+      <Filter>Server</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

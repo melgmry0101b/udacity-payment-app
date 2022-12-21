@@ -18,6 +18,10 @@
 #include "../Terminal/terminal.h"
 #include "../Server/server.h"
 
+#include "../Card/card.tests.h"
+#include "../Terminal/terminal.tests.h"
+#include "../Server/server.tests.h"
+
 // ------------------------------
 // Application's Main Procedure
 // ------------------------------
