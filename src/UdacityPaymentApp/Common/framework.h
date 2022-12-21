@@ -22,8 +22,21 @@
 // ====== C Standard Library Headers ======
 // ========================================
 
-#include <stdio.h>
+#define __STDC_WANT_LIB_EXT1__ 1
+#define __STDC_WANT_SECURE_LIB__ 1
+
+#include <assert.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#if !defined(__STDC_LIB_EXT1__) && !defined(__STDC_SECURE_LIB__)
+#error "The application requires secure standard C library."
+#endif
 
 // =================================
 // ====== Windows API Headers ======
