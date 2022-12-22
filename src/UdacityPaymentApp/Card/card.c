@@ -19,7 +19,7 @@
 // ---------------------------------------------
 // getCardHolderName
 // 
-// Asks the user to for card holder name.
+// Asks the user for card holder name.
 // ---------------------------------------------
 EN_cardError_t getCardHolderName(ST_cardData_t *cardData)
 {
@@ -35,7 +35,8 @@ EN_cardError_t getCardHolderName(ST_cardData_t *cardData)
         inputFormat,
         1,
         CARD_HOLDER_NAME_MAX_LEN,
-        cardHolderName);
+        cardHolderName,
+        CARD_HOLDER_NAME_BUF_SIZE);
     if (consoleResult != CONSOLE_OK)
     {
         return WRONG_NAME;
@@ -44,6 +45,11 @@ EN_cardError_t getCardHolderName(ST_cardData_t *cardData)
     return CardProcessGetCardHolderName(cardData, cardHolderName, CARD_HOLDER_NAME_BUF_SIZE);
 }
 
+// ---------------------------------------------
+// getCardExpiryDate
+// 
+// Asks the user for card expiry date.
+// ---------------------------------------------
 EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
 {
     assert(cardData != NULL);
@@ -61,7 +67,8 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
         inputFormat,
         1,
         CARD_EXP_DATE_LEN,
-        cardExpiryDate);
+        cardExpiryDate,
+        CARD_EXP_DATE_BUF_SIZE);
     if (consoleResult != CONSOLE_OK)
     {
         return WRONG_EXP_DATE;
