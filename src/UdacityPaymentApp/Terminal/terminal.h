@@ -14,6 +14,13 @@
 #ifndef UDACITYPAYAPP_TERMINAL_H
 #define UDACITYPAYAPP_TERMINAL_H
 
+// ==================
+// ====== Defs ======
+// ==================
+
+#define TERMINAL_TRANSACTION_DATE_BUF_SIZE  11
+#define TERMINAL_TRANSACTION_DATE_LEN       10
+
 // ===================
 // ====== Types ======
 // ===================
@@ -40,5 +47,18 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData);
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData);
 EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float maxAmount);
 EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData); // Optional
+
+// ====================================
+// ====== Implementation Methods ======
+// ====================================
+
+// ---------------------------------------------
+// Processes the input date and copy to output
+//  if applicable.
+// ---------------------------------------------
+EN_terminalError_t TerminalProcessTransactionDate(
+    ST_terminalData_t *termData,
+    const uint8_t *transactionDate,
+    size_t transactionDateSize);
 
 #endif
