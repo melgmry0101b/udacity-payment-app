@@ -35,7 +35,7 @@ bool TestCase_IsCardExpried_InvalidSameMonthYear(void);
 bool TestCase_IsCardExpried_InvalidFutureMonth(void);
 bool TestCase_IsCardExpried_InvalidFutureMonthYear(void);
 
-bool TestCase_GetTransactionAmount_ProperDate(void);
+bool TestCase_GetTransactionAmount_ProperAmount(void);
 bool TestCase_GetTransactionAmount_ZeroAmount(void);
 bool TestCase_GetTransactionAmount_NegativeAmount(void);
 
@@ -197,7 +197,7 @@ void getTransactionAmountTest(void)
     puts("");
 
     puts("~~Test Case 1~~");
-    if (TestCase_GetTransactionAmount_ProperDate())
+    if (TestCase_GetTransactionAmount_ProperAmount())
         puts("++++SUCCEEDED++++");
     else
         puts("----FAILED----");
@@ -579,12 +579,12 @@ bool TestCase_IsCardExpried_InvalidFutureMonthYear(void)
     return actualResult == expectedResult;
 }
 
-bool TestCase_GetTransactionAmount_ProperDate(void)
+bool TestCase_GetTransactionAmount_ProperAmount(void)
 {
     const float inputData = 100;
     const EN_terminalError_t expectedResult = TERMINAL_OK;
 
-    puts("Case:            " STRINGIZE(TestCase_GetTransactionAmount_ProperDate));
+    puts("Case:            " STRINGIZE(TestCase_GetTransactionAmount_ProperAmount));
     printf("Input Data:      %f\n", inputData);
     printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
     printf("Actual Result:   ");
