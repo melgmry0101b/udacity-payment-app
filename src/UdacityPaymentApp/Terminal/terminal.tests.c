@@ -35,6 +35,10 @@ bool TestCase_IsCardExpried_InvalidSameMonthYear(void);
 bool TestCase_IsCardExpried_InvalidFutureMonth(void);
 bool TestCase_IsCardExpried_InvalidFutureMonthYear(void);
 
+bool TestCase_GetTransactionAmount_ProperDate(void);
+bool TestCase_GetTransactionAmount_ZeroAmount(void);
+bool TestCase_GetTransactionAmount_NegativeAmount(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -174,9 +178,44 @@ void isCardExpriedTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// getTransactionAmountTest
+// 
+// Tests getTransactionAmountTest
+//  through TerminalProcessTransactionAmount
+// ---------------------------------------------
 void getTransactionAmountTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(getTransactionAmountTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_GetTransactionAmount_ProperDate())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_GetTransactionAmount_ZeroAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_GetTransactionAmount_NegativeAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 void isBelowMaxAmountTest(void)
@@ -496,6 +535,69 @@ bool TestCase_IsCardExpried_InvalidFutureMonthYear(void)
     EN_terminalError_t actualResult = TERMINAL_OK;
 
     actualResult = isCardExpired(&cardData, &termData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetTransactionAmount_ProperDate(void)
+{
+    const float inputData = 100;
+    const EN_terminalError_t expectedResult = TERMINAL_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_GetTransactionAmount_ProperDate));
+    printf("Input Data:      %f\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_terminalData_t termData = { 0 };
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = TerminalProcessTransactionAmount(&termData, inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetTransactionAmount_ZeroAmount(void)
+{
+    const float inputData = 0;
+    const EN_terminalError_t expectedResult = INVALID_AMOUNT;
+
+    puts("Case:            " STRINGIZE(TestCase_GetTransactionAmount_ZeroAmount));
+    printf("Input Data:      %f\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(INVALID_AMOUNT));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_terminalData_t termData = { 0 };
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = TerminalProcessTransactionAmount(&termData, inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetTransactionAmount_NegativeAmount(void)
+{
+    const float inputData = -200;
+    const EN_terminalError_t expectedResult = INVALID_AMOUNT;
+
+    puts("Case:            " STRINGIZE(TestCase_GetTransactionAmount_NegativeAmount));
+    printf("Input Data:      %f\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(INVALID_AMOUNT));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_terminalData_t termData = { 0 };
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = TerminalProcessTransactionAmount(&termData, inputData);
 
     PrintTerminalError(actualResult);
 

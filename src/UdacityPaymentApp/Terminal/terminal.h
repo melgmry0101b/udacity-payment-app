@@ -21,6 +21,8 @@
 #define TERMINAL_TRANSACTION_DATE_BUF_SIZE  11
 #define TERMINAL_TRANSACTION_DATE_LEN       10
 
+#define TERMINAL_AMOUNTS_MAX_INPUT_LEN 25 // Includes sign and decimal
+
 // ===================
 // ====== Types ======
 // ===================
@@ -60,5 +62,11 @@ EN_terminalError_t TerminalProcessTransactionDate(
     ST_terminalData_t *termData,
     const uint8_t *transactionDate,
     size_t transactionDateSize);
+
+// ---------------------------------------------
+// Processes the input amount and copy to output
+//  if applicable.
+// ---------------------------------------------
+EN_terminalError_t TerminalProcessTransactionAmount(ST_terminalData_t *termData, float amount);
 
 #endif

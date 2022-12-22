@@ -84,9 +84,31 @@ EN_terminalError_t isCardExpired(ST_cardData_t *cardData, ST_terminalData_t *ter
     return EXPIRED_CARD;
 }
 
+// ---------------------------------------------
+// getTransactionAmount
+// 
+// Asks user for transaction amount.
+// ---------------------------------------------
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
 {
-    return TERMINAL_OK;
+    assert(termData != NULL);
+
+    CONSOLE_RESULT  consoleResult = CONSOLE_OK;
+    float amount = 0;
+    const char inputFormat[] = " %f ";
+
+    consoleResult = ReadConsolePrompt(
+        "Transaction Amount [ > 0 ]: ",
+        inputFormat,
+        1,
+        TERMINAL_AMOUNTS_MAX_INPUT_LEN,
+        &amount);
+    if (consoleResult != CONSOLE_OK)
+    {
+        return INVALID_AMOUNT;
+    }
+
+    return TerminalProcessTransactionAmount(termData, amount);
 }
 
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
@@ -159,6 +181,26 @@ EN_terminalError_t TerminalProcessTransactionDate(
         _RPTF0(_CRT_ERROR, "Unexpected error occurred during `strcpy_s`\n");
         return WRONG_DATE;
     }
+
+    return TERMINAL_OK;
+}
+
+// ---------------------------------------------
+// TerminalProcessTransactionAmount
+// 
+// Processes the input amount and copy to output
+//  if applicable.
+// ---------------------------------------------
+EN_terminalError_t TerminalProcessTransactionAmount(ST_terminalData_t *termData, float amount)
+{
+    assert(termData != NULL);
+
+    if (amount <= 0)
+    {
+        return INVALID_AMOUNT;
+    }
+
+    termData->transAmount = amount;
 
     return TERMINAL_OK;
 }
