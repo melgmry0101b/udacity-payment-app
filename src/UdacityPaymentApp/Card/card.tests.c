@@ -33,6 +33,12 @@ bool TestCase_GetCardExpiryDate_InvalidMonth(void);
 bool TestCase_GetCardExpiryDate_InvalidYear(void);
 bool TestCase_GetCardExpiryDate_InvalidSeparator(void);
 
+bool TestCase_GetCardPAN_ProperPAN(void);
+bool TestCase_GetCardPAN_NullPAN(void);
+bool TestCase_GetCardPAN_LessThanMin(void);
+bool TestCase_GetCardPAN_MoreThanMax(void);
+bool TestCase_GetCardPAN_NotNumeric(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -157,9 +163,60 @@ void getCardExpiryDateTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// getCardPANTest
+// 
+// Tests getCardPAN
+//  through CardProcessCardPAN
+// ---------------------------------------------
 void getCardPANTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(getCardPANTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_GetCardPAN_ProperPAN())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_GetCardPAN_NullPAN())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_GetCardPAN_LessThanMin())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 4~~");
+    if (TestCase_GetCardPAN_MoreThanMax())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 5~~");
+    if (TestCase_GetCardPAN_NotNumeric())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 // =============================
@@ -412,6 +469,111 @@ bool TestCase_GetCardExpiryDate_InvalidSeparator(void)
     EN_cardError_t actualResult = CARD_OK;
 
     actualResult = CardProcessCardExpiryDate(&cardData, inputData, countof(inputData, uint8_t));
+
+    PrintCardError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetCardPAN_ProperPAN(void)
+{
+    const uint8_t inputData[] = "5105105105105100";
+    const EN_cardError_t expectedResult = CARD_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_GetCardPAN_ProperPAN));
+    printf("Input Data:      %s\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(CARD_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_cardData_t cardData = { 0 };
+    EN_cardError_t actualResult = CARD_OK;
+
+    actualResult = CardProcessCardPAN(&cardData, inputData, countof(inputData, uint8_t));
+
+    PrintCardError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetCardPAN_NullPAN(void)
+{
+    const uint8_t *inputData = NULL;
+    const EN_cardError_t expectedResult = WRONG_PAN;
+
+    puts("Case:            " STRINGIZE(TestCase_GetCardPAN_NullPAN));
+    printf("Input Data:      %s\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(WRONG_PAN));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_cardData_t cardData = { 0 };
+    EN_cardError_t actualResult = CARD_OK;
+
+    actualResult = CardProcessCardPAN(&cardData, inputData, 0);
+
+    PrintCardError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetCardPAN_LessThanMin(void)
+{
+    const uint8_t inputData[] = "510510510510";
+    const EN_cardError_t expectedResult = WRONG_PAN;
+
+    puts("Case:            " STRINGIZE(TestCase_GetCardPAN_LessThanMin));
+    printf("Input Data:      %s\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(WRONG_PAN));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_cardData_t cardData = { 0 };
+    EN_cardError_t actualResult = CARD_OK;
+
+    actualResult = CardProcessCardPAN(&cardData, inputData, countof(inputData, uint8_t));
+
+    PrintCardError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetCardPAN_MoreThanMax(void)
+{
+    const uint8_t inputData[] = "5105105105100000000000000000000";
+    const EN_cardError_t expectedResult = WRONG_PAN;
+
+    puts("Case:            " STRINGIZE(TestCase_GetCardPAN_MoreThanMax));
+    printf("Input Data:      %s\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(WRONG_PAN));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_cardData_t cardData = { 0 };
+    EN_cardError_t actualResult = CARD_OK;
+
+    actualResult = CardProcessCardPAN(&cardData, inputData, countof(inputData, uint8_t));
+
+    PrintCardError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetCardPAN_NotNumeric(void)
+{
+    const uint8_t inputData[] = "510510510ABC";
+    const EN_cardError_t expectedResult = WRONG_PAN;
+
+    puts("Case:            " STRINGIZE(TestCase_GetCardPAN_NotNumeric));
+    printf("Input Data:      %s\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(WRONG_PAN));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_cardData_t cardData = { 0 };
+    EN_cardError_t actualResult = CARD_OK;
+
+    actualResult = CardProcessCardPAN(&cardData, inputData, countof(inputData, uint8_t));
 
     PrintCardError(actualResult);
 
