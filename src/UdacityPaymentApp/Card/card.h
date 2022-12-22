@@ -25,6 +25,9 @@
 #define CARD_HOLDER_NAME_MAX_LEN    24
 #define CARD_HOLDER_NAME_MIN_LEN    20
 
+#define CARD_EXP_DATE_BUF_SIZE  6
+#define CARD_EXP_DATE_LEN       5
+
 // ===================
 // ====== Types ======
 // ===================
@@ -58,5 +61,11 @@ EN_cardError_t getCardPAN(ST_cardData_t *cardData);
 //  if applicable.
 // ---------------------------------------------
 EN_cardError_t CardProcessGetCardHolderName(ST_cardData_t *cardData, const uint8_t *cardHolderName, size_t cardHolderNameSize);
+
+// ---------------------------------------------
+// Processes the input date and copy to output
+//  if applicable.
+// ---------------------------------------------
+EN_cardError_t CardProcessCardExpiryDate(ST_cardData_t *cardData, const uint8_t *cardExpiryDate, size_t cardExpiryDateSize);
 
 #endif
