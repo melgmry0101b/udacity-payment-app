@@ -240,6 +240,7 @@ void PrintCardError(EN_cardError_t cardError)
         puts(STRINGIZE(WRONG_PAN));
         break;
     default:
+        puts("(unknown)");
         break;
     }
 }
