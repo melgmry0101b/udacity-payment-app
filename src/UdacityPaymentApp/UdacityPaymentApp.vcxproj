@@ -182,6 +182,7 @@
     <ClInclude Include="Application\app.h" />
     <ClInclude Include="Card\card.h" />
     <ClInclude Include="Card\card.tests.h" />
+    <ClInclude Include="Common\console.h" />
     <ClInclude Include="Common\framework.h" />
     <ClInclude Include="Common\pch.h" />
     <ClInclude Include="Resource\resource.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Application\app.c" />
     <ClCompile Include="Card\card.c" />
     <ClCompile Include="Card\card.tests.c" />
+    <ClCompile Include="Common\console.c" />
     <ClCompile Include="Common\pch.c">
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ForcedIncludeFiles>

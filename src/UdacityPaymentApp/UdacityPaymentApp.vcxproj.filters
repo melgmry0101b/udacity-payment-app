@@ -55,6 +55,9 @@
     <ClInclude Include="Server\server.tests.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="Common\console.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource\version.rc">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="Server\server.tests.c">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\console.c">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

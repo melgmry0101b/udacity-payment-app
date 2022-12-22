@@ -14,6 +14,8 @@
 #ifndef UDACITYPAYAPP_APP_H
 #define UDACITYPAYAPP_APP_H
 
+#include "console.h"
+
 #include "../Card/card.h"
 #include "../Terminal/terminal.h"
 #include "../Server/server.h"
@@ -21,6 +23,17 @@
 #include "../Card/card.tests.h"
 #include "../Terminal/terminal.tests.h"
 #include "../Server/server.tests.h"
+
+// ====================
+// ====== Macros ======
+// ====================
+
+#define STRINGIZE(x) #x
+#define STRINGIZE_EXPRESSION(x) STRINGIZE(x)
+
+// =====================
+// ====== Methods ======
+// =====================
 
 // ---------------------------------------------
 // Application's Main Procedure

@@ -26,6 +26,7 @@
 #define __STDC_WANT_SECURE_LIB__ 1
 
 #include <assert.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
