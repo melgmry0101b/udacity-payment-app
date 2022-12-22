@@ -36,6 +36,8 @@
 #define sizeof_field(t, f) (sizeof(((t *)0)->f))
 #endif // !sizeof_field
 
+#define countof(c, t) (sizeof(c) / sizeof(t))
+
 // =====================
 // ====== Methods ======
 // =====================

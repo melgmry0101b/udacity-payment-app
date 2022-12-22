@@ -14,6 +14,17 @@
 #ifndef UDACITYPAYAPP_CARD_H
 #define UDACITYPAYAPP_CARD_H
 
+// ==================
+// ====== Defs ======
+// ==================
+
+// NOTE: As the prototypes are required to be present as-is, we can't use these defs
+//  in the prototypes, but we have to use them everywhere else.
+
+#define CARD_HOLDER_NAME_BUF_SIZE   25
+#define CARD_HOLDER_NAME_MAX_LEN    24
+#define CARD_HOLDER_NAME_MIN_LEN    20
+
 // ===================
 // ====== Types ======
 // ===================
@@ -37,5 +48,15 @@ typedef enum EN_cardError_t
 EN_cardError_t getCardHolderName(ST_cardData_t *cardData);
 EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData);
 EN_cardError_t getCardPAN(ST_cardData_t *cardData);
+
+// ====================================
+// ====== Implementation Methods ======
+// ====================================
+
+// ---------------------------------------------
+// Processes the input data and copy to output
+//  if applicable.
+// ---------------------------------------------
+EN_cardError_t CardProcessGetCardHolderName(ST_cardData_t *cardData, const uint8_t *cardHolderName, size_t cardHolderNameSize);
 
 #endif
