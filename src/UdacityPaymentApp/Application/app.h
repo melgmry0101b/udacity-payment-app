@@ -31,6 +31,11 @@
 #define STRINGIZE(x) #x
 #define STRINGIZE_EXPRESSION(x) STRINGIZE(x)
 
+// https://stackoverflow.com/questions/3553296/sizeof-single-struct-member-in-c#comment128887232_42757140
+#ifndef sizeof_field
+#define sizeof_field(t, f) (sizeof(((t *)0)->f))
+#endif // !sizeof_field
+
 // =====================
 // ====== Methods ======
 // =====================
