@@ -16,6 +16,10 @@
 #include "../Application/app.h"
 #include "server.h"
 
+// =====================
+// ====== Methods ======
+// =====================
+
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
     return SERVER_OK;
@@ -45,3 +49,7 @@ void listSavedTransactions(void)
 {
 
 }
+
+// ====================================
+// ====== Implementation Methods ======
+// ====================================

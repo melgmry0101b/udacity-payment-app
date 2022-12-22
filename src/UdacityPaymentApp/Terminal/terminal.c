@@ -16,6 +16,10 @@
 #include "../Application/app.h"
 #include "terminal.h"
 
+// =====================
+// ====== Methods ======
+// =====================
+
 // ---------------------------------------------
 // getTransactionDate
 // 
@@ -154,6 +158,10 @@ EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData) // Optional
 
     return TERMINAL_OK;
 }
+
+// ====================================
+// ====== Implementation Methods ======
+// ====================================
 
 // ---------------------------------------------
 // TerminalProcessTransactionDate
