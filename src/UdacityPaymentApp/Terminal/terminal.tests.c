@@ -39,6 +39,10 @@ bool TestCase_GetTransactionAmount_ProperDate(void);
 bool TestCase_GetTransactionAmount_ZeroAmount(void);
 bool TestCase_GetTransactionAmount_NegativeAmount(void);
 
+bool TestCase_IsBelowMaxAmount_ProperAmount(void);
+bool TestCase_IsBelowMaxAmount_SameAsMaxAmount(void);
+bool TestCase_IsBelowMaxAmount_LargeAmount(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -218,9 +222,43 @@ void getTransactionAmountTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// isBelowMaxAmountTest
+// 
+// Tests isBelowMaxAmountTest
+// ---------------------------------------------
 void isBelowMaxAmountTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(isBelowMaxAmountTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_IsBelowMaxAmount_ProperAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_IsBelowMaxAmount_SameAsMaxAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_IsBelowMaxAmount_LargeAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 void setMaxAmountTest(void)
@@ -598,6 +636,66 @@ bool TestCase_GetTransactionAmount_NegativeAmount(void)
     EN_terminalError_t actualResult = TERMINAL_OK;
 
     actualResult = TerminalProcessTransactionAmount(&termData, inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsBelowMaxAmount_ProperAmount(void)
+{
+    ST_terminalData_t inputData = { .transAmount = 200, .maxTransAmount = 500 };
+    const EN_terminalError_t expectedResult = TERMINAL_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsBelowMaxAmount_ProperAmount));
+    printf("Input Data:      Amount %f, Max %f\n", inputData.transAmount, inputData.maxTransAmount);
+    printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isBelowMaxAmount(&inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsBelowMaxAmount_SameAsMaxAmount(void)
+{
+    ST_terminalData_t inputData = { .transAmount = 500, .maxTransAmount = 500 };
+    const EN_terminalError_t expectedResult = TERMINAL_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsBelowMaxAmount_SameAsMaxAmount));
+    printf("Input Data:      Amount %f, Max %f\n", inputData.transAmount, inputData.maxTransAmount);
+    printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isBelowMaxAmount(&inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsBelowMaxAmount_LargeAmount(void)
+{
+    ST_terminalData_t inputData = { .transAmount = 501, .maxTransAmount = 500 };
+    const EN_terminalError_t expectedResult = EXCEED_MAX_AMOUNT;
+
+    puts("Case:            " STRINGIZE(TestCase_IsBelowMaxAmount_LargeAmount));
+    printf("Input Data:      Amount %f, Max %f\n", inputData.transAmount, inputData.maxTransAmount);
+    printf("Expected Result: %s\n", STRINGIZE(EXCEED_MAX_AMOUNT));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isBelowMaxAmount(&inputData);
 
     PrintTerminalError(actualResult);
 

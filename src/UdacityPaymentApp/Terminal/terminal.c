@@ -111,9 +111,16 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
     return TerminalProcessTransactionAmount(termData, amount);
 }
 
+// ---------------------------------------------
+// isBelowMaxAmount
+// 
+// Check if transaction amount exceeds max.
+// ---------------------------------------------
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
 {
-    return TERMINAL_OK;
+    assert(termData != NULL);
+
+    return termData->transAmount > termData->maxTransAmount ? EXCEED_MAX_AMOUNT : TERMINAL_OK;
 }
 
 EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float maxAmount)
