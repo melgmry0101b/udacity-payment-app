@@ -26,6 +26,7 @@ bool TestCase_GetCardHolderName_LessThanMin(void);
 bool TestCase_GetCardHolderName_MoreThanMax(void);
 
 bool TestCase_GetCardExpiryDate_ProperDate(void);
+bool TestCase_GetCardExpiryDate_NullDate(void);
 bool TestCase_GetCardExpiryDate_LessThanLength(void);
 bool TestCase_GetCardExpiryDate_MoreThanLength(void);
 bool TestCase_GetCardExpiryDate_InvalidMonth(void);
@@ -84,6 +85,12 @@ void getCardHolderNameTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// getCardExpiryDateTest
+// 
+// Tests getCardExpiryDate
+//  through CardProcessCardExpiryDate
+// ---------------------------------------------
 void getCardExpiryDateTest(void)
 {
     puts("");
@@ -101,7 +108,7 @@ void getCardExpiryDateTest(void)
     puts("");
 
     puts("~~Test Case 2~~");
-    if (TestCase_GetCardExpiryDate_LessThanLength())
+    if (TestCase_GetCardExpiryDate_NullDate())
         puts("++++SUCCEEDED++++");
     else
         puts("----FAILED----");
@@ -109,7 +116,7 @@ void getCardExpiryDateTest(void)
     puts("");
 
     puts("~~Test Case 3~~");
-    if (TestCase_GetCardExpiryDate_MoreThanLength())
+    if (TestCase_GetCardExpiryDate_LessThanLength())
         puts("++++SUCCEEDED++++");
     else
         puts("----FAILED----");
@@ -117,7 +124,7 @@ void getCardExpiryDateTest(void)
     puts("");
 
     puts("~~Test Case 4~~");
-    if (TestCase_GetCardExpiryDate_InvalidMonth())
+    if (TestCase_GetCardExpiryDate_MoreThanLength())
         puts("++++SUCCEEDED++++");
     else
         puts("----FAILED----");
@@ -125,7 +132,7 @@ void getCardExpiryDateTest(void)
     puts("");
 
     puts("~~Test Case 5~~");
-    if (TestCase_GetCardExpiryDate_InvalidYear())
+    if (TestCase_GetCardExpiryDate_InvalidMonth())
         puts("++++SUCCEEDED++++");
     else
         puts("----FAILED----");
@@ -133,6 +140,14 @@ void getCardExpiryDateTest(void)
     puts("");
 
     puts("~~Test Case 6~~");
+    if (TestCase_GetCardExpiryDate_InvalidYear())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 7~~");
     if (TestCase_GetCardExpiryDate_InvalidSeparator())
         puts("++++SUCCEEDED++++");
     else
@@ -271,6 +286,27 @@ bool TestCase_GetCardExpiryDate_ProperDate(void)
     EN_cardError_t actualResult = CARD_OK;
 
     actualResult = CardProcessCardExpiryDate(&cardData, inputData, countof(inputData, uint8_t));
+
+    PrintCardError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_GetCardExpiryDate_NullDate(void)
+{
+    const uint8_t *inputData = NULL;
+    const EN_cardError_t expectedResult = WRONG_EXP_DATE;
+
+    puts("Case:            " STRINGIZE(TestCase_GetCardExpiryDate_NullDate));
+    printf("Input Data:      %s\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(WRONG_EXP_DATE));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_cardData_t cardData = { 0 };
+    EN_cardError_t actualResult = CARD_OK;
+
+    actualResult = CardProcessCardExpiryDate(&cardData, inputData, 0);
 
     PrintCardError(actualResult);
 
