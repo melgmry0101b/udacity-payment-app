@@ -29,6 +29,12 @@ bool TestCase_GetTransactionDate_InvalidMonth(void);
 bool TestCase_GetTransactionDate_InvalidYear(void);
 bool TestCase_GetTransactionDate_InvalidSeparator(void);
 
+bool TestCase_IsCardExpried_ValidNotSameYear(void);
+bool TestCase_IsCardExpried_ValidSameYear(void);
+bool TestCase_IsCardExpried_InvalidSameMonthYear(void);
+bool TestCase_IsCardExpried_InvalidFutureMonth(void);
+bool TestCase_IsCardExpried_InvalidFutureMonthYear(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -113,9 +119,59 @@ void getTransactionDateTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// isCardExpriedTest
+// 
+// Tests isCardExpriedTest
+// ---------------------------------------------
 void isCardExpriedTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(isCardExpriedTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_IsCardExpried_ValidNotSameYear())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_IsCardExpried_ValidSameYear())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_IsCardExpried_InvalidSameMonthYear())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 4~~");
+    if (TestCase_IsCardExpried_InvalidFutureMonth())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 5~~");
+    if (TestCase_IsCardExpried_InvalidFutureMonthYear())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 void getTransactionAmountTest(void)
@@ -335,6 +391,111 @@ bool TestCase_GetTransactionDate_InvalidSeparator(void)
     EN_terminalError_t actualResult = TERMINAL_OK;
 
     actualResult = TerminalProcessTransactionDate(&termData, inputData, countof(inputData, uint8_t));
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsCardExpried_ValidNotSameYear(void)
+{
+    ST_cardData_t       cardData = { .cardExpirationDate    = "12/25" };
+    ST_terminalData_t   termData = { .transactionDate       = "22/12/2022" };
+    const EN_terminalError_t expectedResult = TERMINAL_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsCardExpried_ValidNotSameYear));
+    printf("Input Data:      Card %s, Transaction %s\n", cardData.cardExpirationDate, termData.transactionDate);
+    printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isCardExpired(&cardData, &termData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsCardExpried_ValidSameYear(void)
+{
+    ST_cardData_t       cardData = { .cardExpirationDate    = "12/22" };
+    ST_terminalData_t   termData = { .transactionDate       = "22/11/2022" };
+    const EN_terminalError_t expectedResult = TERMINAL_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsCardExpried_ValidSameYear));
+    printf("Input Data:      Card %s, Transaction %s\n", cardData.cardExpirationDate, termData.transactionDate);
+    printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isCardExpired(&cardData, &termData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsCardExpried_InvalidSameMonthYear(void)
+{
+    ST_cardData_t       cardData = { .cardExpirationDate    = "12/22" };
+    ST_terminalData_t   termData = { .transactionDate       = "22/12/2022" };
+    const EN_terminalError_t expectedResult = EXPIRED_CARD;
+
+    puts("Case:            " STRINGIZE(TestCase_IsCardExpried_InvalidSameMonthYear));
+    printf("Input Data:      Card %s, Transaction %s\n", cardData.cardExpirationDate, termData.transactionDate);
+    printf("Expected Result: %s\n", STRINGIZE(EXPIRED_CARD));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isCardExpired(&cardData, &termData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsCardExpried_InvalidFutureMonth(void)
+{
+    ST_cardData_t       cardData = { .cardExpirationDate    = "01/23" };
+    ST_terminalData_t   termData = { .transactionDate       = "22/02/2023" };
+    const EN_terminalError_t expectedResult = EXPIRED_CARD;
+
+    puts("Case:            " STRINGIZE(TestCase_IsCardExpried_InvalidFutureMonth));
+    printf("Input Data:      Card %s, Transaction %s\n", cardData.cardExpirationDate, termData.transactionDate);
+    printf("Expected Result: %s\n", STRINGIZE(EXPIRED_CARD));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isCardExpired(&cardData, &termData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsCardExpried_InvalidFutureMonthYear(void)
+{
+    ST_cardData_t       cardData = { .cardExpirationDate    = "12/22" };
+    ST_terminalData_t   termData = { .transactionDate       = "22/02/2023" };
+    const EN_terminalError_t expectedResult = EXPIRED_CARD;
+
+    puts("Case:            " STRINGIZE(TestCase_IsCardExpried_InvalidFutureMonthYear));
+    printf("Input Data:      Card %s, Transaction %s\n", cardData.cardExpirationDate, termData.transactionDate);
+    printf("Expected Result: %s\n", STRINGIZE(EXPIRED_CARD));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = isCardExpired(&cardData, &termData);
 
     PrintTerminalError(actualResult);
 

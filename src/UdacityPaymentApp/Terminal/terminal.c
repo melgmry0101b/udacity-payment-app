@@ -44,9 +44,44 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
     return TerminalProcessTransactionDate(termData, transactionDate, TERMINAL_TRANSACTION_DATE_BUF_SIZE);
 }
 
+// ---------------------------------------------
+// isCardExpired
+// 
+// Check card expiry date.
+// ---------------------------------------------
 EN_terminalError_t isCardExpired(ST_cardData_t *cardData, ST_terminalData_t *termData)
 {
-    return TERMINAL_OK;
+    assert(cardData != NULL);
+    assert(termData != NULL);
+
+    int cardExpiryMonth = 0;
+    int cardExpiryYear = 0;
+
+    int transactionMonth = 0;
+    int transactionYear = 0;
+
+    if (sscanf_s(cardData->cardExpirationDate, "%d/%d", &cardExpiryMonth, &cardExpiryYear) != 2)
+    {
+        _RPTF0(_CRT_ERROR, "Unexpected error occurred during `sscanf_s`.\n");
+        return EXPIRED_CARD;
+    }
+
+    // Add `2000` to the card year to normalize the date
+    cardExpiryYear += 2000;
+
+    if (sscanf_s(termData->transactionDate, "%*d/%d/%d", &transactionMonth, &transactionYear) != 2)
+    {
+        _RPTF0(_CRT_ERROR, "Unexpected error occurred during `sscanf_s`.\n");
+        return EXPIRED_CARD;
+    }
+
+    if ((transactionYear < cardExpiryYear)
+        || (transactionYear == cardExpiryYear && transactionMonth < cardExpiryMonth))
+    {
+        return TERMINAL_OK;
+    }
+
+    return EXPIRED_CARD;
 }
 
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
