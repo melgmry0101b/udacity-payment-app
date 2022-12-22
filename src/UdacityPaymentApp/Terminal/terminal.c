@@ -123,13 +123,35 @@ EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
     return termData->transAmount > termData->maxTransAmount ? EXCEED_MAX_AMOUNT : TERMINAL_OK;
 }
 
+// ---------------------------------------------
+// setMaxAmount
+// 
+// Sets max amount for transaction.
+// ---------------------------------------------
 EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float maxAmount)
 {
+    assert(termData != NULL);
+
+    if (maxAmount <= 0)
+    {
+        return INVALID_MAX_AMOUNT;
+    }
+
+    termData->maxTransAmount = maxAmount;
+
     return TERMINAL_OK;
 }
 
+// ---------------------------------------------
+// isValidCardPAN
+// 
+// Checks validity of card PAN regarding
+//  Luhn number.
+// ---------------------------------------------
 EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData) // Optional
 {
+    // TODO: To Be implemented
+
     return TERMINAL_OK;
 }
 

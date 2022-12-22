@@ -43,6 +43,10 @@ bool TestCase_IsBelowMaxAmount_ProperAmount(void);
 bool TestCase_IsBelowMaxAmount_SameAsMaxAmount(void);
 bool TestCase_IsBelowMaxAmount_LargeAmount(void);
 
+bool TestCase_SetMaxAmount_ProperAmount(void);
+bool TestCase_SetMaxAmount_ZeroAmount(void);
+bool TestCase_SetMaxAmount_NegativeAmount(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -261,14 +265,53 @@ void isBelowMaxAmountTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// setMaxAmountTest
+// 
+// Tests setMaxAmount
+// ---------------------------------------------
 void setMaxAmountTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(setMaxAmountTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_SetMaxAmount_ProperAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_SetMaxAmount_ZeroAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_SetMaxAmount_NegativeAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
+// ---------------------------------------------
+// isValidCardPANTest
+// 
+// Tests isValidCardPAN
+// ---------------------------------------------
 void isValidCardPANTest(void)
 {
-
+    // TODO: TO BE IMPLEMENTED
 }
 
 // =============================
@@ -696,6 +739,69 @@ bool TestCase_IsBelowMaxAmount_LargeAmount(void)
     EN_terminalError_t actualResult = TERMINAL_OK;
 
     actualResult = isBelowMaxAmount(&inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_SetMaxAmount_ProperAmount(void)
+{
+    const float inputData = 100;
+    const EN_terminalError_t expectedResult = TERMINAL_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_SetMaxAmount_ProperAmount));
+    printf("Input Data:      %f\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(TERMINAL_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_terminalData_t termData = { 0 };
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = setMaxAmount(&termData, inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_SetMaxAmount_ZeroAmount(void)
+{
+    const float inputData = 0;
+    const EN_terminalError_t expectedResult = INVALID_MAX_AMOUNT;
+
+    puts("Case:            " STRINGIZE(TestCase_SetMaxAmount_ZeroAmount));
+    printf("Input Data:      %f\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(INVALID_MAX_AMOUNT));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_terminalData_t termData = { 0 };
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = setMaxAmount(&termData, inputData);
+
+    PrintTerminalError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_SetMaxAmount_NegativeAmount(void)
+{
+    const float inputData = -200;
+    const EN_terminalError_t expectedResult = INVALID_MAX_AMOUNT;
+
+    puts("Case:            " STRINGIZE(TestCase_SetMaxAmount_NegativeAmount));
+    printf("Input Data:      %f\n", inputData);
+    printf("Expected Result: %s\n", STRINGIZE(INVALID_MAX_AMOUNT));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    ST_terminalData_t termData = { 0 };
+    EN_terminalError_t actualResult = TERMINAL_OK;
+
+    actualResult = setMaxAmount(&termData, inputData);
 
     PrintTerminalError(actualResult);
 
