@@ -72,7 +72,7 @@ void appStart(void)
         // Print choices header.
         PrintChoices();
 
-        consoleResult = ReadConsolePrompt("Enter your choice: ", "%d ", 1, 2, &choice);
+        consoleResult = ReadConsolePrompt("Enter your choice: ", " %d ", 1, 2, &choice);
         switch (consoleResult)
         {
         case CONSOLE_OK:
@@ -156,7 +156,7 @@ static void CommandPerformTests(void)
         // Print choices header.
         PrintTestChoices();
 
-        consoleResult = ReadConsolePrompt("Enter your choice: ", "%d ", 1, 2, &choice);
+        consoleResult = ReadConsolePrompt("Enter your choice: ", " %d ", 1, 2, &choice);
         switch (consoleResult)
         {
         case CONSOLE_OK:

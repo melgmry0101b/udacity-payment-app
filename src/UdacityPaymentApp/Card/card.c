@@ -28,7 +28,7 @@ EN_cardError_t getCardHolderName(ST_cardData_t *cardData)
     CONSOLE_RESULT  consoleResult                               = CONSOLE_OK;
     uint8_t         cardHolderName[CARD_HOLDER_NAME_BUF_SIZE]   = { '\0' }; // Temp to perform checks then copy to cardData.
     // NOTE: here we are reading using `c` so we can read whitespaces.
-    const char      inputFormat[]                               = "%" STRINGIZE_EXPRESSION(CARD_HOLDER_NAME_MAX_LEN) "c ";
+    const char      inputFormat[]                               = " %" STRINGIZE_EXPRESSION(CARD_HOLDER_NAME_MAX_LEN) "c ";
 
     consoleResult = ReadConsolePrompt(
         "Card holder Name [min. 20, max. 24]: ",
