@@ -26,6 +26,10 @@ bool TestCase_IsValidAccount_InvalidAccount(void);
 bool TestCase_IsBlockedAccount_RunningAccount(void);
 bool TestCase_IsBlockedAccount_BlockedAccount(void);
 
+bool TestCase_IsAmountAvailable_ProperAmount(void);
+bool TestCase_IsAmountAvailable_SameAsBalance(void);
+bool TestCase_IsAmountAvailable_MoreThanBalance(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -97,9 +101,43 @@ void isBlockedAccountTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// isAmountAvailableTest
+// 
+// Tests isAmountAvailable.
+// ---------------------------------------------
 void isAmountAvailableTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(isAmountAvailableTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_IsAmountAvailable_ProperAmount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_IsAmountAvailable_SameAsBalance())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_IsAmountAvailable_MoreThanBalance())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 void saveTransactionTest(void)
@@ -245,6 +283,69 @@ bool TestCase_IsBlockedAccount_BlockedAccount(void)
     EN_serverError_t actualResult = SERVER_OK;
 
     actualResult = isBlockedAccount(&inputData);
+
+    PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsAmountAvailable_ProperAmount(void)
+{
+    ST_terminalData_t inputTermData = { .transAmount = 200.0 };
+    ST_accountsDB_t inputAccountData = { .balance = 3000.0 };
+    const EN_serverError_t expectedResult = SERVER_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsAmountAvailable_ProperAmount));
+    printf("Input Data:      Transaction %f, Account %f\n", inputTermData.transAmount, inputAccountData.balance);
+    printf("Expected Result: %s\n", STRINGIZE(SERVER_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = SERVER_OK;
+
+    actualResult = isAmountAvailable(&inputTermData, &inputAccountData);
+
+    PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsAmountAvailable_SameAsBalance(void)
+{
+    ST_terminalData_t inputTermData = { .transAmount = 3000.0 };
+    ST_accountsDB_t inputAccountData = { .balance = 3000.0 };
+    const EN_serverError_t expectedResult = SERVER_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsAmountAvailable_SameAsBalance));
+    printf("Input Data:      Transaction %f, Account %f\n", inputTermData.transAmount, inputAccountData.balance);
+    printf("Expected Result: %s\n", STRINGIZE(SERVER_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = SERVER_OK;
+
+    actualResult = isAmountAvailable(&inputTermData, &inputAccountData);
+
+    PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsAmountAvailable_MoreThanBalance(void)
+{
+    ST_terminalData_t inputTermData = { .transAmount = 5000.0 };
+    ST_accountsDB_t inputAccountData = { .balance = 3000.0 };
+    const EN_serverError_t expectedResult = LOW_BALANCE;
+
+    puts("Case:            " STRINGIZE(TestCase_IsAmountAvailable_MoreThanBalance));
+    printf("Input Data:      Transaction %f, Account %f\n", inputTermData.transAmount, inputAccountData.balance);
+    printf("Expected Result: %s\n", STRINGIZE(LOW_BALANCE));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = SERVER_OK;
+
+    actualResult = isAmountAvailable(&inputTermData, &inputAccountData);
 
     PrintServerError(actualResult);
 

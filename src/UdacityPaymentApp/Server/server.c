@@ -106,9 +106,17 @@ EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountRefrence)
     return accountRefrence->state == BLOCKED ? BLOCKED_ACCOUNT : SERVER_OK;
 }
 
+// ---------------------------------------------
+// isAmountAvailable
+//
+// Checks if an account is has enough balance.
+// ---------------------------------------------
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t *accountRefrence)
 {
-    return SERVER_OK;
+    assert(termData != NULL);
+    assert(accountRefrence != NULL);
+
+    return termData->transAmount > accountRefrence->balance ? LOW_BALANCE : SERVER_OK;
 }
 
 EN_serverError_t saveTransaction(ST_transaction_t *transData)
