@@ -61,14 +61,37 @@ static uint16_t transactionsCount = 0;
 // ====== Methods ======
 // =====================
 
+// ---------------------------------------------
+// recieveTransactionData
+//
+// Makes a transactions on an account.
+// ---------------------------------------------
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
     return SERVER_OK;
 }
 
+// ---------------------------------------------
+// isValidAccount
+//
+// Checks if an account is valid.
+// ---------------------------------------------
 EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t *accountRefrence)
 {
-    return SERVER_OK;
+    assert(cardData != NULL);
+    assert(accountRefrence != NULL);
+
+    // Check if the account exists using PAN
+    for (int i = 0; i < MAX_ENTRIES; i++)
+    {
+        if (strcmp(accountsDB[i].primaryAccountNumber, cardData->primaryAccountNumber) == 0)
+        {
+            *accountRefrence = accountsDB[i];
+            return SERVER_OK;
+        }
+    }
+
+    return ACCOUNT_NOT_FOUND;
 }
 
 EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountRefrence)
