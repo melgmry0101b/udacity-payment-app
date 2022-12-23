@@ -94,9 +94,16 @@ EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t *accoun
     return ACCOUNT_NOT_FOUND;
 }
 
+// ---------------------------------------------
+// isBlockedAccount
+//
+// Checks if an account is blocked.
+// ---------------------------------------------
 EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountRefrence)
 {
-    return SERVER_OK;
+    assert(accountRefrence != NULL);
+
+    return accountRefrence->state == BLOCKED ? BLOCKED_ACCOUNT : SERVER_OK;
 }
 
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t *accountRefrence)

@@ -23,6 +23,9 @@
 bool TestCase_IsValidAccount_ValidAccount(void);
 bool TestCase_IsValidAccount_InvalidAccount(void);
 
+bool TestCase_IsBlockedAccount_RunningAccount(void);
+bool TestCase_IsBlockedAccount_BlockedAccount(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -63,9 +66,35 @@ void isValidAccountTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// isBlockedAccountTest
+// 
+// Tests isBlockedAccount.
+// ---------------------------------------------
 void isBlockedAccountTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(isBlockedAccountTest));
+    puts("");
 
+    puts("~~Test Case 1~~");
+    if (TestCase_IsBlockedAccount_RunningAccount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_IsBlockedAccount_BlockedAccount())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 void isAmountAvailableTest(void)
@@ -176,6 +205,46 @@ bool TestCase_IsValidAccount_InvalidAccount(void)
     EN_serverError_t actualResult = SERVER_OK;
 
     actualResult = isValidAccount(&inputData, &account);
+
+    PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsBlockedAccount_RunningAccount(void)
+{
+    ST_accountsDB_t inputData = { .state = RUNNING };
+    const EN_serverError_t expectedResult = SERVER_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_IsBlockedAccount_RunningAccount));
+    printf("Input Data:      %s\n", "RUNNING");
+    printf("Expected Result: %s\n", STRINGIZE(SERVER_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = SERVER_OK;
+
+    actualResult = isBlockedAccount(&inputData);
+
+    PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_IsBlockedAccount_BlockedAccount(void)
+{
+    ST_accountsDB_t inputData = { .state = BLOCKED };
+    const EN_serverError_t expectedResult = BLOCKED_ACCOUNT;
+
+    puts("Case:            " STRINGIZE(TestCase_IsBlockedAccount_BlockedAccount));
+    printf("Input Data:      %s\n", "RUNNING");
+    printf("Expected Result: %s\n", STRINGIZE(BLOCKED_ACCOUNT));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = SERVER_OK;
+
+    actualResult = isBlockedAccount(&inputData);
 
     PrintServerError(actualResult);
 
