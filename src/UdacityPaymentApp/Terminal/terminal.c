@@ -33,7 +33,7 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
     time_t curTime = time(NULL);
     struct tm local_time = { 0 };
 
-    if (!localtime_s(&local_time, &curTime))
+    if (localtime_s(&local_time, &curTime) != 0)
     {
         _RPTF0(_CRT_ERROR, "Unexpected error occurred during retrieving time.\n");
         return WRONG_DATE;
