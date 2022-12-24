@@ -244,6 +244,11 @@ void listSavedTransactionsTest(void)
     puts("Function Name: " STRINGIZE(listSavedTransactionsTest));
     puts("");
 
+    // NOTE: As `listSavedTransactions` is a UI method that
+    //  prints the available data to the screen with no
+    //  return value, writing test cases for this method
+    //  may not deliver proper value to the test suite.
+
     puts("~~No test cases available~~");
 
     puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
