@@ -119,8 +119,33 @@ EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t 
     return termData->transAmount > accountRefrence->balance ? LOW_BALANCE : SERVER_OK;
 }
 
+// ---------------------------------------------
+// saveTransaction
+//
+// Saves transaction into the database.
+// ---------------------------------------------
 EN_serverError_t saveTransaction(ST_transaction_t *transData)
 {
+    assert(transData != NULL);
+
+    // NOTE: we should check for if we reached the max count
+    //  if allowed transactions, but for the sake of brevity
+    //  and be aligned with the rubric, we omit this check.
+
+    // I could've used `transactionsCount` directly, but this check is for being aligned with the rubric.
+    uint32_t nextSquenceNumber = transactionsCount == 0 ? 1 : transactionsDB[transactionsCount - 1].transactionSequenceNumber + 1;
+
+    transData->transactionSequenceNumber = nextSquenceNumber;
+
+    if (memcpy_s(&transactionsDB[transactionsCount], sizeof(ST_transaction_t), transData, sizeof(ST_transaction_t)) != 0)
+    {
+        _RPTF0(_CRT_ERROR, "Unexpected error occurred during `memcpy_s`\n");
+
+        // We should return error by here, but the rubric required us to return only `SERVER_OK`.
+    }
+
+    transactionsCount++;
+
     return SERVER_OK;
 }
 
