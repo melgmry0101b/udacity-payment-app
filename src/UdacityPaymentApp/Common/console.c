@@ -100,7 +100,7 @@ CONSOLE_RESULT ReadConsolePrompt(const char *prompt, const char *inputFormat, in
     // Check if the user input is longer than expected
     //  We check for this if we don't have a linefeed followed by null.
     lastLineFeed = strrchr(pBuffer, '\n');
-    if (lastLineFeed == NULL || *(++lastLineFeed) != '\0')
+    if (lastLineFeed == NULL || *(lastLineFeed + 1) != '\0')
     {
         // In this case, stdin still has characters, we have to clear it
         ClearStdin();
@@ -108,6 +108,9 @@ CONSOLE_RESULT ReadConsolePrompt(const char *prompt, const char *inputFormat, in
         result = CONSOLE_INVALID_INPUT;
         goto done;
     }
+
+    // Set the last linefeed character to null
+    *(lastLineFeed) = '\0';
 
     // Parse the input
     va_start(vaArgs, maxInputLength);
