@@ -36,7 +36,16 @@ bool TestCase_IsAmountAvailable_MoreThanBalance(void);
 
 void recieveTransactionDataTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(recieveTransactionDataTest));
+    puts("");
 
+    puts("~~No test cases available~~");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 // ---------------------------------------------
@@ -140,14 +149,42 @@ void isAmountAvailableTest(void)
     puts("");
 }
 
+// ---------------------------------------------
+// saveTransactionTest
+// 
+// Tests saveTransaction.
+// ---------------------------------------------
 void saveTransactionTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(saveTransactionTest));
+    puts("");
 
+    puts("~~No test cases available~~");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
+// ---------------------------------------------
+// listSavedTransactionsTest
+// 
+// Tests listSavedTransactions.
+// ---------------------------------------------
 void listSavedTransactionsTest(void)
 {
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(listSavedTransactionsTest));
+    puts("");
 
+    puts("~~No test cases available~~");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 // =============================

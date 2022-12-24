@@ -312,6 +312,17 @@ void setMaxAmountTest(void)
 void isValidCardPANTest(void)
 {
     // TODO: TO BE IMPLEMENTED
+
+    puts("");
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("Tester Name: " _APP_VER_COMPANY);
+    puts("Function Name: " STRINGIZE(isValidCardPANTest));
+    puts("");
+
+    puts("~~No test cases available~~");
+
+    puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    puts("");
 }
 
 // =============================
