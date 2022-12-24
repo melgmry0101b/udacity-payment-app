@@ -13,6 +13,12 @@ trim_trailing_whitespace = true
 guidelines = 125
 guidelines_style = 1px solid 282828
 
+# Markdown files
+[*.md]
+end_of_line = crlf
+indent_style = space
+indent_size = 2
+
 # Make sure we don't mess with our sln
 [*.sln]
 charset = utf-8-bom
