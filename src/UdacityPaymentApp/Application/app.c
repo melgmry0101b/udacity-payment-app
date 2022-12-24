@@ -24,7 +24,8 @@ enum _COMMAND_CHOICE {
 };
 
 enum _TESTS_CHOICE {
-    TEST_CARD_HOLDER_NAME = 1,
+    TEST_RUN_ALL,
+    TEST_CARD_HOLDER_NAME,
     TEST_CARD_EXPIRY_DATE,
     TEST_CARD_PAN,
     TEST_TRANSACTION_DATE,
@@ -175,6 +176,23 @@ static void CommandPerformTests(void)
 
         switch (choice)
         {
+        case TEST_RUN_ALL:
+            getCardHolderNameTest();
+            getCardExpiryDateTest();
+            getCardPANTest();
+            getTransactionDateTest();
+            isCardExpriedTest();
+            getTransactionAmountTest();
+            isBelowMaxAmountTest();
+            setMaxAmountTest();
+            isValidCardPANTest();
+            recieveTransactionDataTest();
+            isValidAccountTest();
+            isBlockedAccountTest();
+            isAmountAvailableTest();
+            saveTransactionTest();
+            listSavedTransactionsTest();
+            break;
         case TEST_CARD_HOLDER_NAME:
             getCardHolderNameTest();
             break;
@@ -237,6 +255,7 @@ static void PrintTestChoices(void)
     puts("Select your test:");
     puts("");
 
+    puts("\t[ 0] Run all tests");
     puts("\t[ 1] getCardHolderNameTest");
     puts("\t[ 2] getCardExpiryDateTest");
     puts("\t[ 3] getCardPANTest");
