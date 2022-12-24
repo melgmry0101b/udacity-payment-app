@@ -35,6 +35,9 @@ bool TestCase_IsAmountAvailable_ProperAmount(void);
 bool TestCase_IsAmountAvailable_SameAsBalance(void);
 bool TestCase_IsAmountAvailable_MoreThanBalance(void);
 
+bool TestCase_SaveTransactionTest_Success(void);
+bool TestCase_SaveTransactionTest_Failed(void);
+
 // =====================
 // ====== Methods ======
 // =====================
@@ -195,16 +198,37 @@ void isAmountAvailableTest(void)
 // ---------------------------------------------
 void saveTransactionTest(void)
 {
+    // Reset database before testing.
+    ResetDatabase();
+
     puts("");
     puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     puts("Tester Name: " _APP_VER_COMPANY);
     puts("Function Name: " STRINGIZE(saveTransactionTest));
     puts("");
 
-    puts("~~No test cases available~~");
+    puts("~~Test Case 1~~");
+    if (TestCase_SaveTransactionTest_Success())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    // Reset database between test cases.
+    ResetDatabase();
+
+    puts("~~Test Case 2~~");
+    if (TestCase_SaveTransactionTest_Failed())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
 
     puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     puts("");
+
+    // Reset database after testing.
+    ResetDatabase();
 }
 
 // ---------------------------------------------
@@ -540,6 +564,67 @@ bool TestCase_RecieveTransactionDataTest_DeclinedStolenCard(void)
     actualResult = recieveTransactionData(&inputData);
 
     PrintTransactionState(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_SaveTransactionTest_Success(void)
+{
+    ST_transaction_t inputData = {
+        .cardHolderData.cardHolderName = "Saleh Ahmed Khalid Ali",
+        .cardHolderData.cardExpirationDate = "09/23",
+        .cardHolderData.primaryAccountNumber = "8989374615436851",
+        .terminalData.transactionDate = "24/12/2022",
+        .terminalData.transAmount = 5.0,
+        .terminalData.maxTransAmount = 5000.0
+    };
+    const EN_serverError_t expectedResult = SERVER_OK;
+
+    puts("Case:            " STRINGIZE(TestCase_SaveTransactionTest_Success));
+    printf("Input Data:      PAN %s\n", inputData.cardHolderData.primaryAccountNumber);
+    printf("Expected Result: %s\n", STRINGIZE(SERVER_OK));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = APPROVED;
+
+    actualResult = saveTransaction(&inputData);
+
+    PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_SaveTransactionTest_Failed(void)
+{
+    ST_transaction_t inputData = {
+        .cardHolderData.cardHolderName = "Saleh Ahmed Khalid Ali",
+        .cardHolderData.cardExpirationDate = "09/23",
+        .cardHolderData.primaryAccountNumber = "8989374615436851",
+        .terminalData.transactionDate = "24/12/2022",
+        .terminalData.transAmount = 5.0,
+        .terminalData.maxTransAmount = 5000.0
+    };
+    const EN_serverError_t expectedResult = SAVING_FAILED;
+
+    puts("Case:            " STRINGIZE(TestCase_SaveTransactionTest_Failed));
+    printf("Input Data:      PAN %s\n", inputData.cardHolderData.primaryAccountNumber);
+    printf("Expected Result: %s\n", STRINGIZE(SAVING_FAILED));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_serverError_t actualResult = APPROVED;
+
+    // Fill the database
+    for (int i = 0; i < MAX_ENTRIES; i++)
+    {
+        saveTransaction(&inputData);
+    }
+
+    // Do final save over entries, this have to cause an error.
+    actualResult = saveTransaction(&inputData);
+
+    PrintServerError(actualResult);
 
     return actualResult == expectedResult;
 }

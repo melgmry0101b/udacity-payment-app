@@ -14,6 +14,12 @@
 #ifndef UDACITYPAYAPP_SERVER_H
 #define UDACITYPAYAPP_SERVER_H
 
+// ==================
+// ====== Defs ======
+// ==================
+
+#define MAX_ENTRIES 255
+
 // ===================
 // ====== Types ======
 // ===================
