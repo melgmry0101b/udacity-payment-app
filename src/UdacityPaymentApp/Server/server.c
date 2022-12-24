@@ -68,7 +68,58 @@ static uint16_t transactionsCount = 0;
 // ---------------------------------------------
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
-    return SERVER_OK;
+    assert(transData != NULL);
+
+    EN_transState_t transState = APPROVED;
+    EN_serverError_t serverError = SERVER_OK;
+    ST_accountsDB_t account = { 0 };
+
+    // Check if the account is valid.
+    serverError = isValidAccount(&transData->cardHolderData, &account);
+    if (serverError != SERVER_OK) { goto done; }
+
+    // check if the account is blocked
+    serverError = isBlockedAccount(&account);
+    if (serverError != SERVER_OK) { goto done; }
+
+    // Check if enough balance is available
+    serverError = isAmountAvailable(&transData->terminalData, &account);
+    if (serverError != SERVER_OK) { goto done; }
+done:
+    switch (serverError)
+    {
+    case SERVER_OK:
+        transState = APPROVED;
+        break;
+    case ACCOUNT_NOT_FOUND:
+        transState = FRAUD_CARD;
+        break;
+    case LOW_BALANCE:
+        transState = DECLINED_INSUFFECIENT_FUND;
+        break;
+    case BLOCKED_ACCOUNT:
+        transState = DECLINED_STOLEN_CARD;
+        break;
+    default:
+        transState = INTERNAL_SERVER_ERROR;
+        break;
+    }
+
+    transData->transState = transState;
+
+    if (saveTransaction(transData) != SERVER_OK)
+    {
+        transData->transState = INTERNAL_SERVER_ERROR;
+        return INTERNAL_SERVER_ERROR;
+    }
+
+    // Update balance if the transaction has been approved and saved.
+    if (transState == APPROVED)
+    {
+        account.balance -= transData->terminalData.transAmount;
+    }
+
+    return transState;
 }
 
 // ---------------------------------------------
