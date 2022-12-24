@@ -238,6 +238,21 @@ void listSavedTransactions(void)
 // ====== Implementation Methods ======
 // ====================================
 
+// ---------------------------------------------
+// ClearTransactionsDatabase
+//
+// Resets the transactions database.
+// ---------------------------------------------
+void ClearTransactionsDatabase(void)
+{
+    memset(transactionsDB, 0, sizeof(transactionsDB));
+    transactionsCount = 0;
+}
+
+// =============================
+// ====== Private Methods ======
+// =============================
+
 const char *TransactionStateToStr(EN_transState_t transState)
 {
     switch (transState)

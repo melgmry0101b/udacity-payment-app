@@ -60,4 +60,13 @@ EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t 
 EN_serverError_t saveTransaction(ST_transaction_t *transData);
 void listSavedTransactions(void);
 
+// ====================================
+// ====== Implementation Methods ======
+// ====================================
+
+// ---------------------------------------------
+// Resets the transactions database.
+// ---------------------------------------------
+void ClearTransactionsDatabase(void);
+
 #endif
