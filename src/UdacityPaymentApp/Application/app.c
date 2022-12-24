@@ -20,7 +20,9 @@
 // ===================
 
 enum _COMMAND_CHOICE {
-    COMMAND_PERFORM_TESTS = 1
+    COMMAND_PERFORM_TESTS = 1,
+    COMMAND_MAKE_TRANSACTION,
+    COMMAND_LIST_TRANSACTIONS
 };
 
 enum _TESTS_CHOICE {
@@ -48,8 +50,9 @@ enum _TESTS_CHOICE {
 
 static void PrintHeader(void);
 static void PrintChoices(void);
-static void CommandPerformTests(void);
 static void PrintTestChoices(void);
+static void CommandPerformTests(void);
+static void CommandMakeTransaction(void);
 
 // =====================
 // ====== Methods ======
@@ -99,6 +102,12 @@ void appStart(void)
         case COMMAND_PERFORM_TESTS:
             CommandPerformTests();
             break;
+        case COMMAND_MAKE_TRANSACTION:
+            CommandMakeTransaction();
+            break;
+        case COMMAND_LIST_TRANSACTIONS:
+            listSavedTransactions();
+            break;
         default:
             continue;
         }
@@ -138,7 +147,202 @@ static void PrintChoices(void)
     puts("");
 
     puts("\t[1] Perform Tests");
+    puts("\t[2] Make a Transaction");
+    puts("\t[3] List All Transactions");
 
+    puts("");
+}
+
+// ---------------------------------------------
+// PrintUserReadableCardError
+// 
+// Print card error as user readable string.
+// ---------------------------------------------
+static void PrintUserReadableCardError(EN_cardError_t cardError)
+{
+    switch (cardError)
+    {
+    case CARD_OK:
+        puts("Data has been accepted.");
+        break;
+    case WRONG_NAME:
+        puts("You entered a wrong name.");
+        break;
+    case WRONG_EXP_DATE:
+        puts("Wrong date format.");
+        break;
+    case WRONG_PAN:
+        puts("Wrong PAN.");
+        break;
+    default:
+        puts("##Unknown Error##");
+        break;
+    }
+}
+
+// ---------------------------------------------
+// PrintUserReadableTerminalError
+// 
+// Print terminal error as user readable string.
+// ---------------------------------------------
+static void PrintUserReadableTerminalError(EN_terminalError_t termError)
+{
+    switch (termError)
+    {
+    case TERMINAL_OK:
+        puts("Data has been accepted.");
+        break;
+    case WRONG_DATE:
+        puts("Wrong date format.");
+        break;
+    case EXPIRED_CARD:
+        puts("Card is expired.");
+        break;
+    case INVALID_CARD:
+        puts("Invalid card.");
+        break;
+    case INVALID_AMOUNT:
+        puts("Invalid amount provided.");
+        break;
+    case EXCEED_MAX_AMOUNT:
+        puts("Amount exceeds max terminal amount.");
+        break;
+    case INVALID_MAX_AMOUNT:
+        puts("Invalid max amount provided.");
+        break;
+    default:
+        puts("##Unknown Error##");
+        break;
+    }
+}
+
+// ---------------------------------------------
+// PrintUserReadableTransactionState
+// 
+// Print terminal error as user readable string.
+// ---------------------------------------------
+static void PrintUserReadableTransactionState(EN_transState_t transState)
+{
+    switch (transState)
+    {
+    case APPROVED:
+        puts("Transaction has been approved.");
+        break;
+    case DECLINED_INSUFFECIENT_FUND:
+        puts("Transaction has been declined because of insufficient funds.");
+        break;
+    case DECLINED_STOLEN_CARD:
+        puts("Transaction has been declined because the card has been reported stolen.");
+        break;
+    case FRAUD_CARD:
+        puts("Transaction has been declined because the data entered is fraudulent.");
+        break;
+    case INTERNAL_SERVER_ERROR:
+        puts("##INTERNAL SERVER ERROR##");
+        break;
+    default:
+        puts("##Unknown Error##");
+        break;
+    }
+}
+
+
+// ---------------------------------------------
+// CommandMakeTransaction
+// 
+// Handler for performing tests command.
+// ---------------------------------------------
+static void CommandMakeTransaction(void)
+{
+    EN_cardError_t cardError = CARD_OK;
+    ST_cardData_t cardData = { 0 };
+
+    EN_terminalError_t termError = TERMINAL_OK;
+    ST_terminalData_t termData = { 0 };
+
+    EN_transState_t transState = APPROVED;
+    ST_transaction_t transData = { 0 };
+
+    puts("");
+    puts("~~~Creating a new transaction~~~");
+    puts("Max transaction amount is: 5000");
+    puts("");
+
+    setMaxAmount(&termData, 5000.0);
+
+    // =-=-=-=-=
+    // Get card details.
+    // =-=-=-=-=
+
+    cardError = getCardHolderName(&cardData);
+    if (cardError != CARD_OK)
+    {
+        PrintUserReadableCardError(cardError);
+        return;
+    }
+
+    cardError = getCardExpiryDate(&cardData);
+    if (cardError != CARD_OK)
+    {
+        PrintUserReadableCardError(cardError);
+        return;
+    }
+
+    cardError = getCardPAN(&cardData);
+    if (cardError != CARD_OK)
+    {
+        PrintUserReadableCardError(cardError);
+        return;
+    }
+
+    // =-=-=-=-=
+    // Get terminal details.
+    // =-=-=-=-=
+
+    termError = getTransactionDate(&termData);
+    if (termError != TERMINAL_OK)
+    {
+        PrintUserReadableTerminalError(termError);
+        return;
+    }
+
+    termError = isCardExpired(&cardData, &termData);
+    if (termError != TERMINAL_OK)
+    {
+        PrintUserReadableTerminalError(termError);
+        return;
+    }
+
+    termError = getTransactionAmount(&termData);
+    if (termError != TERMINAL_OK)
+    {
+        PrintUserReadableTerminalError(termError);
+        return;
+    }
+
+    termError = isBelowMaxAmount(&termData);
+    if (termError != TERMINAL_OK)
+    {
+        PrintUserReadableTerminalError(termError);
+        return;
+    }
+
+    termError = isValidCardPAN(&cardData);
+    if (termError != TERMINAL_OK)
+    {
+        PrintUserReadableTerminalError(termError);
+        return;
+    }
+
+    // =-=-=-=-=
+    // Call the server.
+    // =-=-=-=-=
+
+    puts("");
+    transData.cardHolderData = cardData;
+    transData.terminalData = termData;
+    transState = recieveTransactionData(&transData);
+    PrintUserReadableTransactionState(transState);
     puts("");
 }
 
@@ -255,7 +459,7 @@ static void PrintTestChoices(void)
     puts("Select your test:");
     puts("");
 
-    puts("\t[ 0] Run all tests");
+    puts("\t[ 0] Run All Tests");
     puts("\t[ 1] getCardHolderNameTest");
     puts("\t[ 2] getCardExpiryDateTest");
     puts("\t[ 3] getCardPANTest");
