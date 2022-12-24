@@ -22,6 +22,12 @@
 
 #define MAX_ENTRIES 255
 
+// ==========================
+// ====== Declarations ======
+// ==========================
+
+const char *TransactionStateToStr(EN_transState_t transState);
+
 // =====================
 // ====== Globals ======
 // =====================
@@ -200,11 +206,53 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData)
     return SERVER_OK;
 }
 
+// ---------------------------------------------
+// listSavedTransactions
+//
+// List transactions saved in the system.
+// ---------------------------------------------
 void listSavedTransactions(void)
 {
+    if (transactionsCount == 0)
+    {
+        puts("~~No transactions~~");
+        return;
+    }
 
+    for (int i = 0; i < transactionsCount; i++)
+    {
+        puts("#########################");
+        printf("Transaction Sequence Number: %.4d", transactionsDB[i].transactionSequenceNumber);
+        printf("Transaction Date:            %s", transactionsDB[i].terminalData.transactionDate);
+        printf("Transaction Amount:          %f", transactionsDB[i].terminalData.transAmount);
+        printf("Transaction State:           %s", TransactionStateToStr(transactionsDB[i].transState));
+        printf("Terminal Max Amount:         %f", transactionsDB[i].terminalData.maxTransAmount);
+        printf("PAN:                         %s", transactionsDB[i].cardHolderData.primaryAccountNumber);
+        printf("Card Expiration Date:        %s", transactionsDB[i].cardHolderData.cardExpirationDate);
+        puts("#########################");
+        puts("");
+    }
 }
 
 // ====================================
 // ====== Implementation Methods ======
 // ====================================
+
+const char *TransactionStateToStr(EN_transState_t transState)
+{
+    switch (transState)
+    {
+    case APPROVED:
+        return STRINGIZE(APPROVED);
+    case DECLINED_INSUFFECIENT_FUND:
+        return STRINGIZE(DECLINED_INSUFFECIENT_FUND);
+    case DECLINED_STOLEN_CARD:
+        return STRINGIZE(DECLINED_STOLEN_CARD);
+    case FRAUD_CARD:
+        return STRINGIZE(FRAUD_CARD);
+    case INTERNAL_SERVER_ERROR:
+        return STRINGIZE(INTERNAL_SERVER_ERROR);
+    default:
+        return "(unknown)";
+    }
+}
