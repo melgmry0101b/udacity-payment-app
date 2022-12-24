@@ -20,7 +20,7 @@
 // ===================
 
 enum _COMMAND_CHOICE {
-    COMMAND_CLEAR_TRANSACTIONS,
+    COMMAND_RESETS_DATABASE,
     COMMAND_PERFORM_TESTS,
     COMMAND_MAKE_TRANSACTION,
     COMMAND_LIST_TRANSACTIONS
@@ -100,9 +100,9 @@ void appStart(void)
 
         switch (choice)
         {
-        case COMMAND_CLEAR_TRANSACTIONS:
-            ClearTransactionsDatabase();
-            puts("Transactions cleared!");
+        case COMMAND_RESETS_DATABASE:
+            ResetDatabase();
+            puts("Database reset!");
             break;
         case COMMAND_PERFORM_TESTS:
             CommandPerformTests();
@@ -151,7 +151,7 @@ static void PrintChoices(void)
     puts("Select your command:");
     puts("");
 
-    puts("\t[0] Clear Transactions");
+    puts("\t[0] Reset Database");
     puts("\t[1] Perform Tests");
     puts("\t[2] Make a Transaction");
     puts("\t[3] List All Transactions");

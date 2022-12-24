@@ -239,12 +239,23 @@ void listSavedTransactions(void)
 // ====================================
 
 // ---------------------------------------------
-// ClearTransactionsDatabase
+// ResetDatabase
 //
-// Resets the transactions database.
+// Resets the database.
 // ---------------------------------------------
-void ClearTransactionsDatabase(void)
+void ResetDatabase(void)
 {
+    accountsDB[0].balance = 2000.0;
+    accountsDB[1].balance = 100000.0;
+    accountsDB[2].balance = 198000.0;
+    accountsDB[3].balance = 0.0;
+    accountsDB[4].balance = 500.0;
+    accountsDB[5].balance = 5200.0;
+    accountsDB[6].balance = 300.0;
+    accountsDB[7].balance = 15900.0;
+    accountsDB[8].balance = 4000.0;
+    accountsDB[9].balance = 0.0;
+
     memset(transactionsDB, 0, sizeof(transactionsDB));
     transactionsCount = 0;
 }

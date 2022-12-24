@@ -65,8 +65,8 @@ void listSavedTransactions(void);
 // ====================================
 
 // ---------------------------------------------
-// Resets the transactions database.
+// Resets the database.
 // ---------------------------------------------
-void ClearTransactionsDatabase(void);
+void ResetDatabase(void);
 
 #endif
