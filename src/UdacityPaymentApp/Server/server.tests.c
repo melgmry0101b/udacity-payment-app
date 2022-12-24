@@ -20,6 +20,11 @@
 // ====== Declarations ======
 // ==========================
 
+bool TestCase_RecieveTransactionDataTest_Approved(void);
+bool TestCase_RecieveTransactionDataTest_Fraud(void);
+bool TestCase_RecieveTransactionDataTest_DeclinedInsuffecientFund(void);
+bool TestCase_RecieveTransactionDataTest_DeclinedStolenCard(void);
+
 bool TestCase_IsValidAccount_ValidAccount(void);
 bool TestCase_IsValidAccount_InvalidAccount(void);
 
@@ -36,16 +41,50 @@ bool TestCase_IsAmountAvailable_MoreThanBalance(void);
 
 void recieveTransactionDataTest(void)
 {
+    // Reset database before testing.
+    ResetDatabase();
+
     puts("");
     puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     puts("Tester Name: " _APP_VER_COMPANY);
     puts("Function Name: " STRINGIZE(recieveTransactionDataTest));
     puts("");
 
-    puts("~~No test cases available~~");
+    puts("~~Test Case 1~~");
+    if (TestCase_RecieveTransactionDataTest_Approved())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 2~~");
+    if (TestCase_RecieveTransactionDataTest_Fraud())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 3~~");
+    if (TestCase_RecieveTransactionDataTest_DeclinedInsuffecientFund())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
+
+    puts("");
+
+    puts("~~Test Case 4~~");
+    if (TestCase_RecieveTransactionDataTest_DeclinedStolenCard())
+        puts("++++SUCCEEDED++++");
+    else
+        puts("----FAILED----");
 
     puts("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     puts("");
+
+    // Reset database after testing.
+    ResetDatabase();
 }
 
 // ---------------------------------------------
@@ -385,6 +424,122 @@ bool TestCase_IsAmountAvailable_MoreThanBalance(void)
     actualResult = isAmountAvailable(&inputTermData, &inputAccountData);
 
     PrintServerError(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_RecieveTransactionDataTest_Approved(void)
+{
+    ST_transaction_t inputData = {
+        .cardHolderData.cardHolderName = "Saleh Ahmed Khalid Ali",
+        .cardHolderData.cardExpirationDate = "09/23",
+        .cardHolderData.primaryAccountNumber = "8989374615436851",
+        .terminalData.transactionDate = "24/12/2022",
+        .terminalData.transAmount = 5.0,
+        .terminalData.maxTransAmount = 5000.0
+    };
+    const EN_transState_t expectedResult = APPROVED;
+
+    puts("Case:            " STRINGIZE(TestCase_RecieveTransactionDataTest_Approved));
+    printf("Input Data:      PAN %s, Amount %f\n",
+        inputData.cardHolderData.primaryAccountNumber,
+        inputData.terminalData.transAmount);
+    printf("Expected Result: %s\n", STRINGIZE(APPROVED));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_transState_t actualResult = APPROVED;
+
+    actualResult = recieveTransactionData(&inputData);
+
+    PrintTransactionState(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_RecieveTransactionDataTest_Fraud(void)
+{
+    ST_transaction_t inputData = {
+        .cardHolderData.cardHolderName = "Saleh Ahmed Khalid Ali",
+        .cardHolderData.cardExpirationDate = "09/23",
+        .cardHolderData.primaryAccountNumber = "0000000000000000",
+        .terminalData.transactionDate = "24/12/2022",
+        .terminalData.transAmount = 5.0,
+        .terminalData.maxTransAmount = 5000.0
+    };
+    const EN_transState_t expectedResult = FRAUD_CARD;
+
+    puts("Case:            " STRINGIZE(TestCase_RecieveTransactionDataTest_Fraud));
+    printf("Input Data:      PAN %s, Amount %f\n",
+        inputData.cardHolderData.primaryAccountNumber,
+        inputData.terminalData.transAmount);
+    printf("Expected Result: %s\n", STRINGIZE(FRAUD_CARD));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_transState_t actualResult = APPROVED;
+
+    actualResult = recieveTransactionData(&inputData);
+
+    PrintTransactionState(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_RecieveTransactionDataTest_DeclinedInsuffecientFund(void)
+{
+    ST_transaction_t inputData = {
+        .cardHolderData.cardHolderName = "Saleh Ahmed Khalid Ali",
+        .cardHolderData.cardExpirationDate = "09/23",
+        .cardHolderData.primaryAccountNumber = "8989374615436851",
+        .terminalData.transactionDate = "24/12/2022",
+        .terminalData.transAmount = 3000.0,
+        .terminalData.maxTransAmount = 5000.0
+    };
+    const EN_transState_t expectedResult = DECLINED_INSUFFECIENT_FUND;
+
+    puts("Case:            " STRINGIZE(TestCase_RecieveTransactionDataTest_DeclinedInsuffecientFund));
+    printf("Input Data:      PAN %s, Amount %f\n",
+        inputData.cardHolderData.primaryAccountNumber,
+        inputData.terminalData.transAmount);
+    printf("Expected Result: %s\n", STRINGIZE(DECLINED_INSUFFECIENT_FUND));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_transState_t actualResult = APPROVED;
+
+    actualResult = recieveTransactionData(&inputData);
+
+    PrintTransactionState(actualResult);
+
+    return actualResult == expectedResult;
+}
+
+bool TestCase_RecieveTransactionDataTest_DeclinedStolenCard(void)
+{
+    ST_transaction_t inputData = {
+        .cardHolderData.cardHolderName = "Saleh Adel Khalid Adel",
+        .cardHolderData.cardExpirationDate = "09/23",
+        .cardHolderData.primaryAccountNumber = "5807007076043875",
+        .terminalData.transactionDate = "24/12/2022",
+        .terminalData.transAmount = 5.0,
+        .terminalData.maxTransAmount = 5000.0
+    };
+    const EN_transState_t expectedResult = DECLINED_STOLEN_CARD;
+
+    puts("Case:            " STRINGIZE(TestCase_RecieveTransactionDataTest_DeclinedStolenCard));
+    printf("Input Data:      PAN %s, Amount %f\n",
+        inputData.cardHolderData.primaryAccountNumber,
+        inputData.terminalData.transAmount);
+    printf("Expected Result: %s\n", STRINGIZE(DECLINED_STOLEN_CARD));
+    printf("Actual Result:   ");
+
+    // Perform Test
+    EN_transState_t actualResult = APPROVED;
+
+    actualResult = recieveTransactionData(&inputData);
+
+    PrintTransactionState(actualResult);
 
     return actualResult == expectedResult;
 }
