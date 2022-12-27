@@ -116,7 +116,14 @@ done:
     // Update balance if the transaction has been approved and saved.
     if (transState == APPROVED)
     {
-        account.balance -= transData->terminalData.transAmount;
+        for (int i = 0; i < MAX_ENTRIES; i++)
+        {
+            if (strcmp(accountsDB[i].primaryAccountNumber, account.primaryAccountNumber) == 0)
+            {
+                accountsDB[i].balance -= transData->terminalData.transAmount;
+                break;
+            }
+        }
     }
 
     return transState;

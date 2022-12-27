@@ -30,7 +30,7 @@
     <!-- ====== Only Change after this line ====== -->
     <VersionMajor>0</VersionMajor>
     <VersionMinor>1</VersionMinor>
-    <VersionPatch>0</VersionPatch>
+    <VersionPatch>1</VersionPatch>
     <!-- Always add '-' (dash) before VersionPrerelease for semantic versioning -->
     <VersionPrerelease>-alpha</VersionPrerelease>
     <!-- ====== Only change before this line ====== -->

@@ -269,6 +269,8 @@ static void CommandMakeTransaction(void)
     EN_transState_t transState = APPROVED;
     ST_transaction_t transData = { 0 };
 
+    ST_accountsDB_t account = { 0 };
+
     puts("");
     puts("~~~Creating a new transaction~~~");
     puts("Max transaction amount is: 5000");
@@ -349,6 +351,21 @@ static void CommandMakeTransaction(void)
     transData.terminalData = termData;
     transState = recieveTransactionData(&transData);
     PrintUserReadableTransactionState(transState);
+    if (transState == APPROVED)
+    {
+        printf("Amount deducted: %f\n", termData.transAmount);
+
+        // Get the account and print the current balance
+        if (isValidAccount(&cardData, &account) == SERVER_OK)
+        {
+            printf("Current balance: %f\n", account.balance);
+        }
+        else
+        {
+            _RPTF0(_CRT_ERROR, "isValidAccount unexpectedly failed.\n");
+            puts("##Unexpected Error Occurred during `isValidAccount`##");
+        }
+    }
     puts("");
 }
 
